@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record id="shiprocket_parameter_view" model="ir.ui.view">
+            <field name="name">stock.picking</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//notebook" position='inside'>-->
+                <xpath expr="//form/sheet/notebook/page[last()]" position="after">
+                    <page name="shiprocket_info" string="Shiprocket Information" attrs="{'invisible':[('delivery_type','!=','shiprocket')]}">
+                        <group>
+                            <field name="shiprocket_order_id" readonly="1"/>
+                            <field name="shiprocket_shipment_id" readonly="1"/>
+                            <field name="shiprocket_label_url" readonly="1"/>
+                            <field name="shiprocket_shipping_charge_id" readonly="1"/>
+                            <field name="shiprocket_pickup" readonly="1"/>
+                            <field name="shiprocket_shipping_charge_ids" readonly="1">
+                                <tree nolabel="1" readonly="1">
+                                    <field name="courier_name"/>
+                                    <field name="courier_id"/>
+                                    <field name="rate_amount"/>
+                                    <field name="estimated_transit_time"/>
+                                    <button type='object' class="fa fa-arrow-right oe_link" name="set_service"
+                                            string="Use Service"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="/form/header/button[last()]" position="after">
+                    <button type="object" name="get_shiprocket_charges"
+                            string="Get Shiprocket Charges"
+                            attrs="{'invisible':['|','|','|',('shiprocket_shipping_charge_id','!=',False),('shiprocket_shipment_id','=',False),('delivery_type','=',False),('state','not in',('done'))]}"/>
+                    <button type="object" name="generate_shiprocket_pickup"
+                            string="Get Shiprocket Pickup"
+                            attrs="{'invisible':['|','|','|','|',('shiprocket_pickup','!=',False),('shiprocket_shipping_charge_id','!=',False),('shiprocket_shipment_id','=',False),('delivery_type','=',False),('state','not in',('done'))]}"/>
+                    <button type="object" name="generate_shiprocket_awd"
+                            string="Generate Shiprocket AWB"
+                            attrs="{'invisible':['|','|','|',('carrier_tracking_ref','!=',False),('shiprocket_shipment_id','=',False),('delivery_type','=',False),('state','not in',('done'))]}"/>
+
+                    <button type="object" name="generate_shiprocket_label"
+                            string="Generate Shiprocket Label"
+                            attrs="{'invisible':['|','|','|',('shiprocket_label_url','!=',False),('shiprocket_shipment_id','=',False),('delivery_type','=',False),('state','not in',('done'))]}"/>
+                    <button type="object" name="generate_shiprocket_pickup_manually"
+                            string="Shiprocket Pickup Process"
+                            attrs="{'invisible':['|','|','|',('shiprocket_pickup','!=',False),('shiprocket_shipment_id','=',False),('delivery_type','=',False),('state','not in',('done'))]}"/>
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
